@@ -1,28 +1,8 @@
-CREATE TABLE SALESPEOPLE (
-    SNUM INT PRIMARY KEY,
-    SNAME VARCHAR(50),
-    CITY VARCHAR(50),
-    COMM DECIMAL(3,2)
-);
+CREATE TABLE SALESPEOPLE ( SNUM INT PRIMARY KEY,SNAME VARCHAR(50),CITY VARCHAR(50), COMM DECIMAL(3,2);
 
-CREATE TABLE CUST (
-    CNUM INT PRIMARY KEY,
-    CNAME VARCHAR(50),
-    CITY VARCHAR(50),
-    RATING INT,
-    SNUM INT,
-    FOREIGN KEY (SNUM) REFERENCES SALESPEOPLE(SNUM)
-);
+CREATE TABLE CUST (CNUM INT PRIMARY KEY,CNAME VARCHAR(50),CITY VARCHAR(50),RATING INT,SNUM INT,FOREIGN KEY (SNUM) REFERENCES SALESPEOPLE(SNUM));
 
-CREATE TABLE ORDERS (
-    ONUM INT PRIMARY KEY,
-    AMT DECIMAL(10,2),
-    ODATE DATE,
-    CNUM INT,
-    SNUM INT,
-    FOREIGN KEY (CNUM) REFERENCES CUST(CNUM),
-    FOREIGN KEY (SNUM) REFERENCES SALESPEOPLE(SNUM)
-);
+CREATE TABLE ORDERS (ONUM INT PRIMARY KEY,AMT DECIMAL(10,2),ODATE DATE,CNUM INT,SNUM INT,FOREIGN KEY (CNUM) REFERENCES CUST(CNUM),FOREIGN KEY (SNUM) REFERENCES SALESPEOPLE(SNUM));
 
 INSERT INTO SALESPEOPLE VALUES (1001, 'Peel', 'London', 0.12);
 INSERT INTO SALESPEOPLE VALUES (1002, 'Serres', 'San Jose', 0.13);
@@ -48,32 +28,43 @@ INSERT INTO ORDERS VALUES (3008, 4723.00, '1994-10-05', 2006, 1001);
 INSERT INTO ORDERS VALUES (3010, 1309.95, '1994-10-06', 2004, 1002);
 INSERT INTO ORDERS VALUES (3011, 9891.88, '1994-10-06', 2006, 1001);
 
+-- Query 1: Display snum, sname, city, and comm of all salespeople
 SELECT SNUM, SNAME, CITY, COMM FROM SALESPEOPLE;
 
+-- Query 2: Display all snum without duplicates from orders
 SELECT DISTINCT SNUM FROM ORDERS;
 
+-- Query 3: Names and commissions of all salespeople in London
 SELECT SNAME, COMM FROM SALESPEOPLE WHERE CITY = 'London';
 
-SELECT SNAME, COMM FROM SALESPEOPLE WHERE CITY = 'London';
-
+-- Query 4: All customers with a rating of 100
 SELECT * FROM CUST WHERE RATING = 100;
 
+-- Query 5: Produce orderno, amount, and date from all rows in the order table
 SELECT ONUM, AMT, ODATE FROM ORDERS;
 
+-- Query 6: All customers in San Jose with rating more than 200
 SELECT * FROM CUST WHERE CITY = 'San Jose' AND RATING > 200;
 
+-- Query 7: All customers either located in San Jose or with a rating above 200
 SELECT * FROM CUST WHERE CITY = 'San Jose' OR RATING > 200;
 
+-- Query 8: All orders for more than $1000
 SELECT * FROM ORDERS WHERE AMT > 1000;
 
+-- Query 9: Names and cities of all salespeople in London with commission above 0.10
 SELECT SNAME, CITY FROM SALESPEOPLE WHERE CITY = 'London' AND COMM > 0.10;
 
+-- Query 10: All customers excluding those with rating <= 100 unless they are in Rome
 SELECT * FROM CUST WHERE RATING > 100 OR CITY = 'Rome';
 
+-- Query 11: All salespeople in Barcelona or London
 SELECT * FROM SALESPEOPLE WHERE CITY IN ('Barcelona', 'London');
 
+-- Query 12: Salespeople with commission between 0.10 and 0.12 (excluding boundaries)
 SELECT * FROM SALESPEOPLE WHERE COMM > 0.10 AND COMM < 0.12;
 
+-- Query 13: All customers with NULL values in city column
 SELECT * FROM CUST WHERE CITY IS NULL;
 
 -- Query 14: All orders taken on Oct 3rd and Oct 4th, 1994
